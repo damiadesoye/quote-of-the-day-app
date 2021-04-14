@@ -1,0 +1,73 @@
+.App .quote {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+}
+.App .quote-of-the-day {
+  padding: 0 1rem;
+  width: 85%;
+}
+
+.App .author {
+  color: white;
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+.App .author,
+.App .quote,
+.App .action-button {
+  font-family: "Roboto", sans-serif;
+}
+
+/* Ribbon*/
+.ribbon {
+  position: relative;
+  background: #898eba;
+  color: #fff;
+  text-align: center;
+  padding: 1em 2em; /* Adjust to suit */
+  margin: 4em auto 3em; /* Based on 24px vertical rhythm. 48px bottom margin - normally 24 but the ribbon 'graphics' take up 24px themselves so we double it. */
+}
+.ribbon:before,
+.ribbon:after {
+  content: "";
+  position: absolute;
+  display: block;
+  bottom: -1em;
+  border: 1.5em solid #6a6798;
+  z-index: -1;
+}
+.ribbon:before {
+  left: -2em;
+  border-right-width: 1.5em;
+  border-left-color: transparent;
+}
+.ribbon:after {
+  right: -2em;
+  border-left-width: 1.5em;
+  border-right-color: transparent;
+}
+.ribbon .ribbon-content:before,
+.ribbon .ribbon-content:after {
+  content: "";
+  position: absolute;
+  display: none;
+  border-style: solid;
+  border-color: #504f80 transparent transparent transparent;
+  bottom: -1em;
+}
+.ribbon .ribbon-content:before {
+  left: 0;
+  border-width: 1em 0 0 1em;
+}
+.ribbon .ribbon-content:after {
+  right: 0;
+  border-width: 1em 1em 0 0;
+}
+
+/** Mobile */
+@media (max-width: 380px) {
+  .App .quote {
+    font-size: 16px;
+  }
+}

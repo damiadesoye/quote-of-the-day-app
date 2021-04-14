@@ -7,53 +7,69 @@ import Avatar from "./Components/Avatar/Avatar";
 
 class App extends React.Component {
   state = {
+    quotes: null,
     quote:
       "If you're in a bad situation, don't worry it'll change. If you're in a good situation, don't worry it'll change.",
     author: "John Simone",
-    loading: false,
+  };
+  componentDidMount = () => {
+    this.fetchQuotes();
+    this.fetchNewQuote();
   };
   /*
-   * Sends a request to the FreeAPI to get a random quote
+   * Sends a request to the FreeAPI to get list of quotess
    */
-  getQuote = async () => {
-    this.setState({
-      loading: true,
-    });
+  fetchQuotes = async () => {
     const response = await freeAPI.get();
-    var quote = response.data[Math.floor(Math.random() * response.data.length)];
-    console.log(this.state);
+    this.setState({
+      quotes: response.data.filter((quote) => {
+        if (quote.author) {
+          return quote.author[0] !== "B";
+        }
+        return true;
+      }),
+    });
+  };
+  /*
+   * Generate a random new quote
+   */
+  fetchNewQuote = () => {
+    if (!this.state.quotes) {
+      return;
+    }
+    var quote = this.state.quotes[
+      Math.floor(Math.random() * this.state.quotes.length)
+    ];
     this.setState({
       quote: quote.text,
       author: quote.author,
-      loading: false,
     });
   };
 
   getContent() {
-    if (this.state.loading === true) {
+    if (!this.state.quotes) {
       return <Loader />;
     } else {
       return (
         <React.Fragment>
-          <i className="hand point down outline icon main-icon"></i>
           <QuoteOfTheDay quote={this.state.quote} author={this.state.author} />
-          <div className="footer">
-            <hr />
-            <div className="ui grid">
-              <div className="four column row">
-                <div className="left floated column vertical-align">
-                  <Avatar />
-                </div>
-                <div className="right floated column ">
-                  <button
-                    className="ui labeled icon button action-button"
-                    onClick={this.getQuote}
-                  >
-                    <i className="redo icon"></i>
-                    Generate Quote
-                  </button>
-                </div>
+          <br />
+          <div className="sixteen wide column footer">
+            <p className="text-center">
+              <button
+                className="ui labeled icon button action-button"
+                onClick={this.fetchNewQuote}
+              >
+                <i className="redo icon"></i>
+                Generate Quote
+              </button>
+            </p>
+            <div className="flex items-center mt-2">
+              <div className="spacer flex-grow"></div>
+              <div className="px-2 mb-2">
+                <Avatar />
               </div>
+              <div className="spacer flex-grow"></div>
             </div>
           </div>
         </React.Fragment>
@@ -63,7 +79,7 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <div className="ui raised very padded text container segment">
+        <div className="ui raised very padded text container bg-white centered grid ">
           {this.getContent()}
         </div>
       </div>
